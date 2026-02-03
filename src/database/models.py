@@ -1,5 +1,5 @@
 from datetime import datetime
-from sqlalchemy import BigInteger, DateTime, ForeignKey, Integer, func
+from sqlalchemy import BigInteger, DateTime, ForeignKey, Integer, String, func
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
 
 class Base(DeclarativeBase):
@@ -8,8 +8,8 @@ class Base(DeclarativeBase):
 class Video(Base):
     __tablename__ = 'videos'
 
-    id: Mapped[int] = mapped_column(BigInteger, primary_key=True)
-    creator_id: Mapped[int] = mapped_column(BigInteger, index=True)
+    id: Mapped[str] = mapped_column(String, primary_key=True)    
+    creator_id: Mapped[str] = mapped_column(String, index=True)
     video_created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True))
     
     # Итоговая статистика
@@ -25,8 +25,8 @@ class Video(Base):
 class VideoSnapshot(Base):
     __tablename__ = 'video_snapshots'
 
-    id: Mapped[int] = mapped_column(BigInteger, primary_key=True)
-    video_id: Mapped[int] = mapped_column(ForeignKey('videos.id', ondelete='CASCADE'), index=True)
+    id: Mapped[str] = mapped_column(String, primary_key=True)
+    video_id: Mapped[str] = mapped_column(ForeignKey('videos.id', ondelete='CASCADE'), index=True)
     
     # Значения на момент снимка
     views_count: Mapped[int] = mapped_column(BigInteger)
