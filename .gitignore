@@ -19,3 +19,4 @@ ENV/
 config.yaml
 settings.local.toml
 !.env.example
+data/*.json
