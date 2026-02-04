@@ -29,8 +29,6 @@ async def handle_analytics_query(message: Message):
     
     logger.info(f"User {user_id} request: {user_text}")
 
-    status_msg = await message.answer("⏳ Думаю...")
-
     try:
         sql_query = await generate_sql_query(user_text)
         
@@ -38,7 +36,7 @@ async def handle_analytics_query(message: Message):
 
         if sql_query == "SELECT -1":
             logger.warning(f"LLM failed to generate valid SQL for request: {user_text}")
-            await status_msg.edit_text("Не удалось сгенерировать запрос к базе. Попробуйте переформулировать.")
+            await message.answer("0")
             return
 
         async with AsyncSessionLocal() as session:
@@ -47,12 +45,11 @@ async def handle_analytics_query(message: Message):
         
         if answer_number is None:
             logger.info(f"Query executed but returned None (treated as 0) for user {user_id}")
-            await status_msg.edit_text("Ничего не нашлось (0).")
+            await message.answer("0")
         else:
             logger.info(f"Success! Result: {answer_number}")
-            formatted_answer = f"{answer_number:,.0f}".replace(",", " ")
-            await status_msg.edit_text(formatted_answer)
+            await message.answer(str(answer_number))
 
     except Exception as e:
         logger.error(f"Critical error executing query for user {user_id}: {e}", exc_info=True)
-        await status_msg.edit_text(f"Ошибка при выполнении запроса 😔\n(Я еще учусь)")
+        await message.answer("Ошибка")
