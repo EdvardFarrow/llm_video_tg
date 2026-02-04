@@ -110,3 +110,27 @@ docker compose up --build
     
 -   Добавлены индексы на поля `creator_id`, `video_id` и `created_at` для ускорения аналитических запросов.
 
+
+## Структура проекта
+
+Plaintext
+
+```
+.
+├── data/                   # Папка для JSON файла
+├── src/
+│   ├── bot/
+│   │   ├── handlers.py     # Логика обработки сообщений
+│   │   └── main.py         # Точка входа
+│   ├── database/
+│   │   ├── models.py       # SQLAlchemy модели
+│   │   └── db.py           # Настройка движка
+│   ├── services/
+│   │   ├── data_loader.py  # Скрипт загрузки
+│   │   └── llm_service.py  # Интеграция с Gemini API
+│   └── config.py           # Pydantic Settings
+├── entrypoint.sh           # Скрипт инициализации для Docker
+├── Dockerfile
+├── docker-compose.yml
+└── requirements.txt
+```
